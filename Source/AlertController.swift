@@ -374,7 +374,12 @@ public class AlertController: UIViewController {
             let bounds = self.presentingViewController?.view.bounds ?? self.view.bounds
             let width = min(bounds.width, bounds.height) - margins.left - margins.right
             
-            self.actionSheetBottomConstraint = self.alert.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: margins.bottom)
+            if #available(iOS 11.0, *) {
+                self.actionSheetBottomConstraint = self.alert.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: margins.bottom)
+            } else {
+                self.actionSheetBottomConstraint = self.alert.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: margins.bottom)
+            }
+            
             NSLayoutConstraint.activate([
                 self.alert.widthAnchor.constraint(equalToConstant: width * self.visualStyle.width),
                 self.alert.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
